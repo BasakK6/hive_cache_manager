@@ -1,7 +1,5 @@
 library hive_cache_manager;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+//cache classes
+export 'src/i_cache_manager.dart';
+export 'src/i_hive_model.dart';
