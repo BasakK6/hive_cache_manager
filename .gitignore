@@ -27,4 +27,8 @@ migrate_working_dir/
 **/doc/api/
 .dart_tool/
 .packages
+.pub-cache/
+.pub/
 build/
+.flutter-plugins
+.flutter-plugins-dependencies
