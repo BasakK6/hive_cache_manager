@@ -2,10 +2,34 @@ import 'package:hive/hive.dart';
 import 'i_hive_model.dart';
 
 abstract class ICacheManager<T extends IHiveModel> {
-  /// The name that is used when opening a hive box
+  /// The name that is used when opening a hive box.
   final String _boxName;
-  /// The hive box that is used to store key-value pairs
+  /// The hive box that is used to store key-value pairs.
   late Box<T> _hiveBox;
+
+  /// The number of entries in the box.
+  int get hiveBoxLength => _hiveBox.length;
+
+  /// Whether this box is currently open.
+  ///
+  /// Most of the operations on a box require it to be open.
+  bool get isHiveBoxOpen => _hiveBox.isOpen;
+
+  /// Whether there are no entries in the hive box.
+  bool get isHiveBoxEmpty => _hiveBox.isEmpty;
+
+  /// Whether there are entries in the hive box.
+  bool get isHiveBoxNotEmpty => _hiveBox.isNotEmpty;
+
+  /// The location of the box in the file system.
+  ///
+  /// In the browser, it returns null.
+  String? get hiveBoxPath => _hiveBox.path;
+
+  /// The name of the box.
+  ///
+  /// Names are always lowercase.
+  String get hiveBoxName => _hiveBox.name;
 
   ICacheManager(this._boxName);
 
@@ -61,6 +85,13 @@ abstract class ICacheManager<T extends IHiveModel> {
     return _hiveBox.values;
   }
 
+  /// Returns all the keys in the hive box.
+  ///
+  /// The keys are sorted alphabetically in ascending order.
+  Iterable<dynamic> getKeys(){
+    return _hiveBox.keys;
+  }
+
   /// Reads the [T] type value in the hive box for a given [key].
   ///
   /// If the [key] doesn't exist, null is returned.
@@ -68,7 +99,28 @@ abstract class ICacheManager<T extends IHiveModel> {
     return _hiveBox.get(key);
   }
 
+  /// Returns all values starting with the value associated with startKey (inclusive) to the value associated with endKey (inclusive).
+  ///
+  /// If startKey does not exist, an empty iterable is returned.
+  /// If endKey does not exist or is before startKey, it is ignored.
+  /// The values are in the same order as their keys
+  Future<Iterable<T>> getValuesBetween(dynamic startKey, dynamic endKey) async{
+    return _hiveBox.valuesBetween(startKey: startKey, endKey: endKey);
+  }
+
+  /// Checks whether the hive box contains the key.
+  Future<bool> containsKey(dynamic key) async{
+    return _hiveBox.containsKey(key);
+  }
+
   //------delete value(s)------
+
+  /// Deletes all the given [keys] from the hive box.
+  ///
+  /// If a key inside the [keys] doesn't exist, nothing happens.
+  Future<void> removeItems(Iterable<dynamic> keys) async {
+    await _hiveBox.deleteAll(keys);
+  }
 
   /// Deletes the given [key] from the hive box.
   ///
@@ -80,5 +132,17 @@ abstract class ICacheManager<T extends IHiveModel> {
   /// Deletes all the key-value pairs from the hive box.
   Future<void> clearAll() async {
     await _hiveBox.clear();
+  }
+
+  /// Closes all instances of the  hive box.
+  ///
+  /// The box should not be accessed anywhere else after the [closeBox] method call.
+  Future<void> closeBox() async {
+    await _hiveBox.close();
+  }
+
+  /// Closes and deletes the hive box in the device or IndexedDB.
+  Future<void> deleteBox() async {
+    await _hiveBox.deleteFromDisk();
   }
 }
