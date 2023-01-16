@@ -23,7 +23,7 @@ abstract class ICacheManager<T extends IHiveModel> {
   //------add value(s) with autoincrement keys------
 
   /// Adds a list of [T] type objects to the hive box with autoincrement keys.
-  Future<void> addItems(List<T> items) async {
+  Future<void> addItems(Iterable<T> items) async {
     await _hiveBox.addAll(items);
   }
 
@@ -37,7 +37,7 @@ abstract class ICacheManager<T extends IHiveModel> {
   /// Adds a list of [T] type objects to the hive box with model specific keys.
   ///
   /// Model specific key is defined in [mapKey] computed property in the [T] type class (model class).
-  Future<void> putItems(List<T> items) async {
+  Future<void> putItems(Iterable<T> items) async {
     await _hiveBox.putAll(
       Map.fromEntries(
         items.map(
@@ -57,14 +57,14 @@ abstract class ICacheManager<T extends IHiveModel> {
   //------read value(s)------
 
   /// Reads all the [T] type values in the hive box.
-  List<T> getValues() {
-    return _hiveBox.values.toList();
+  Iterable<T> getValues() {
+    return _hiveBox.values;
   }
 
   /// Reads the [T] type value in the hive box for a given [key].
   ///
   /// If the [key] doesn't exist, null is returned.
-  T? getItem(String key) {
+  T? getItem(dynamic key) {
     return _hiveBox.get(key);
   }
 
@@ -73,7 +73,7 @@ abstract class ICacheManager<T extends IHiveModel> {
   /// Deletes the given [key] from the hive box.
   ///
   /// If the [key] doesn't exist, nothing happens.
-  Future<void> removeItem(String key) async {
+  Future<void> removeItem(dynamic key) async {
     await _hiveBox.delete(key);
   }
 
