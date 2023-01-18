@@ -47,12 +47,12 @@ abstract class ICacheManager<T extends IHiveModel> {
   //------add value(s) with autoincrement keys------
 
   /// Adds a list of [T] type objects to the hive box with autoincrement keys.
-  Future<void> addItems(Iterable<T> items) async {
+  Future<void> addItems({required Iterable<T> items}) async {
     await _hiveBox.addAll(items);
   }
 
   /// Adds a [T] type object to the hive box with a autoincrement key.
-  Future<void> addItem(T item) async {
+  Future<void> addItem({required T item}) async {
     await _hiveBox.add(item);
   }
 
@@ -61,7 +61,7 @@ abstract class ICacheManager<T extends IHiveModel> {
   /// Adds a list of [T] type objects to the hive box with model specific keys.
   ///
   /// Model specific key is defined in [mapKey] computed property in the [T] type class (model class).
-  Future<void> putItems(Iterable<T> items) async {
+  Future<void> putItems({required Iterable<T> items}) async {
     await _hiveBox.putAll(
       Map.fromEntries(
         items.map(
@@ -74,7 +74,7 @@ abstract class ICacheManager<T extends IHiveModel> {
   /// Adds a [T] type object to the hive box with a model specific key.
   ///
   /// Model specific key is defined in [mapKey] computed property in the [T] type class (model class).
-  Future<void> putItem(T item) async {
+  Future<void> putItem({required T item}) async {
     await _hiveBox.put(item.mapKey, item);
   }
 
@@ -88,14 +88,14 @@ abstract class ICacheManager<T extends IHiveModel> {
   /// Returns all the keys in the hive box.
   ///
   /// The keys are sorted alphabetically in ascending order.
-  Iterable<dynamic> getKeys(){
+  Iterable<dynamic> getKeys() {
     return _hiveBox.keys;
   }
 
   /// Reads the [T] type value in the hive box for a given [key].
   ///
   /// If the [key] doesn't exist, null is returned.
-  T? getItem(dynamic key) {
+  T? getItem({required dynamic key}) {
     return _hiveBox.get(key);
   }
 
@@ -104,12 +104,12 @@ abstract class ICacheManager<T extends IHiveModel> {
   /// If startKey does not exist, an empty iterable is returned.
   /// If endKey does not exist or is before startKey, it is ignored.
   /// The values are in the same order as their keys
-  Future<Iterable<T>> getValuesBetween(dynamic startKey, dynamic endKey) async{
+  Iterable<T> getValuesBetween({required dynamic startKey, required dynamic endKey}) {
     return _hiveBox.valuesBetween(startKey: startKey, endKey: endKey);
   }
 
   /// Checks whether the hive box contains the key.
-  Future<bool> containsKey(dynamic key) async{
+  bool containsKey({required dynamic key}) {
     return _hiveBox.containsKey(key);
   }
 
@@ -118,14 +118,14 @@ abstract class ICacheManager<T extends IHiveModel> {
   /// Deletes all the given [keys] from the hive box.
   ///
   /// If a key inside the [keys] doesn't exist, nothing happens.
-  Future<void> removeItems(Iterable<dynamic> keys) async {
+  Future<void> removeItems({required Iterable<dynamic> keys}) async {
     await _hiveBox.deleteAll(keys);
   }
 
   /// Deletes the given [key] from the hive box.
   ///
   /// If the [key] doesn't exist, nothing happens.
-  Future<void> removeItem(dynamic key) async {
+  Future<void> removeItem({required dynamic key}) async {
     await _hiveBox.delete(key);
   }
 
