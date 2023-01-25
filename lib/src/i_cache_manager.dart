@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'i_hive_model.dart';
 
 abstract class ICacheManager<T extends IHiveModel> {
@@ -144,5 +147,41 @@ abstract class ICacheManager<T extends IHiveModel> {
   /// Closes and deletes the hive box in the device or IndexedDB.
   Future<void> deleteBox() async {
     await _hiveBox.deleteFromDisk();
+  }
+
+  //------state management------
+
+  /// Returns a [ValueListenable] which notifies its listeners when an entry in the box changes.
+  ///
+  /// If [keys] filter is provided, only changes to entries with the specified [keys] notify the listeners.
+  ValueListenable<Box<T>> getListenable({List<dynamic>? keys}){
+    return _hiveBox.listenable(keys: keys);
+  }
+
+  /// Returns a [ValueListenableBuilder] that is connected to the hive box.
+  ///
+  /// The [buildLayout] function defines how the [data] is used and shown on the user interface.
+  /// If [keys] filter is provided, only changes to entries with the specified [keys] notify the listeners.
+  /// In addition, if the [keys] parameter is provided, the entries are filtered by [keys] and only the matching entries are sent to the [buildLayout] function.
+  /// If no matching entries found, an empty [List] is passed as [data] to the [buildLayout] function.
+  ValueListenableBuilder<Box<T>> getValueListenableBuilder({ required Widget Function(List<T> data) buildLayout, List<dynamic>? keys}){
+    return ValueListenableBuilder(
+      valueListenable: getListenable(keys:keys),
+      builder: (context, box, widget) {
+        if (keys?.isNotEmpty ?? false) {
+          List<T> data = [];
+          //filter the data by keys
+          for (dynamic itemKey in keys!) {
+            if (getItem(key: itemKey) != null) {
+              data.add(getItem(key: itemKey) as T);
+            }
+          }
+
+          return buildLayout(data);
+        }
+
+        return buildLayout(getValues().toList());
+      },
+    );
   }
 }
