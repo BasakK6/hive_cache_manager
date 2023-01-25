@@ -33,7 +33,7 @@ void main() {
 
     // create and explicitly initialize a manager object
     BookCacheManager bookCacheManager = BookCacheManager("${HiveConstants.booksHiveBoxName}_model_specific_keys");
-    await bookCacheManager.init();
+    await bookCacheManager.init(isEncrypted: false);
 
     //clear all the objects written from the previous test run
     await bookCacheManager.clearAll();

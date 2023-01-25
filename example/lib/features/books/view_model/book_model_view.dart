@@ -20,7 +20,7 @@ abstract class BookModelView extends State<BookView> {
   }
 
   Future<bool> initCacheManager() async{
-    await bookCacheManager.init();
+    await bookCacheManager.init(isEncrypted: true);
     return true;
   }
 

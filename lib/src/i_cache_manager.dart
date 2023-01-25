@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'i_hive_model.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:convert';
 
 abstract class ICacheManager<T extends IHiveModel> {
   /// The name that is used when opening a hive box.
@@ -34,18 +36,60 @@ abstract class ICacheManager<T extends IHiveModel> {
   /// Names are always lowercase.
   String get hiveBoxName => _hiveBox.name;
 
+  /// The key that is used to store encryption value as a key-value pair in the flutter secure storage.
+  final String _encryptionKeyName = '_hive_box_encryption_';
+
   ICacheManager(this._boxName);
 
   /// Registers the model specific hive adapters and opens a hive box.
   ///
   /// This method must be explicitly called before calling other methods.
-  Future<void> init() async {
+  /// The hive box is encrypted with a secure encryption key if [isEncrypted] is true.
+  Future<void> init({required bool isEncrypted}) async {
     registerAdapters();
-    _hiveBox = await Hive.openBox(_boxName);
+
+    // apply encryption to the hive box according to isEncrypted and, open the box
+    if (isEncrypted == true) {
+      var hiveAesCipher = await _encryptionCipher();
+      _hiveBox = await Hive.openBox(_boxName, encryptionCipher: hiveAesCipher);
+    } else {
+      _hiveBox = await Hive.openBox(_boxName);
+    }
   }
 
   /// Registers the type adapter objects necessary for hive.
   void registerAdapters();
+
+  //------encryption------
+
+  /// Returns a cipher created with the stored encryption key.
+  Future<HiveAesCipher> _encryptionCipher() async {
+    const secureStorage = FlutterSecureStorage();
+    // if key doesn't exist, encryptionValue is null
+    String? encryptionValue = await secureStorage.read(key: _encryptionKeyName);
+    // if there is no key, create one
+    encryptionValue ??= await _generateNewEncryptionKey(secureStorage);
+    // decode the value
+    final decodedEncryptionValue = base64Url.decode(encryptionValue!);
+    // return encryption cipher
+    return HiveAesCipher(decodedEncryptionValue);
+  }
+
+  /// Generates and stores a secure encryption key using the fortuna random algorithm and flutter secure storage.
+  ///
+  /// Returns the newly generated and stored key.
+  Future<String?> _generateNewEncryptionKey(
+      FlutterSecureStorage secureStorage) async {
+    //generate a key
+    final key = Hive.generateSecureKey();
+    // save the key to flutter secure storage
+    await secureStorage.write(
+      key: _encryptionKeyName,
+      value: base64UrlEncode(key),
+    );
+    //read and return the newly created key
+    return await secureStorage.read(key: _encryptionKeyName);
+  }
 
   //------add value(s) with autoincrement keys------
 
