@@ -289,9 +289,9 @@ On the body of the Scaffold, the data in the box is shown using 3 different ways
 * The second list was filtered by the keys (Books that have "9780618260515", "9780007136575" <ins>keys</ins> were shown)
 * The third list was filtered by a property of the Model Class (only the books that have "1955" in their <ins>year</ins> information were shown)
 
-☑️ Deleting an item from one list is instantly recognized and the change is reflected in all lists.
+✔️ Deleting an item from one list is instantly recognized and the change is reflected in all lists.
 
-####How to Use ValueListenableBuilder
+### How to Use ValueListenableBuilder
 
 Access the ValueListenableBuilder by the "getValueListenableBuilder" method of the cache manager.
 ```dart
@@ -330,7 +330,7 @@ Widget buildListView(List<Book> books){
 (_BookCard is a Stateless widget that defines the UI layout of a Book object. It uses Card and ListTile widgets. You can create any design/layout you like. Check the [_BookCard](https://github.com/BasakK6/hive_cache_manager/blob/master/example/lib/features/books/view/widget/book_card.dart) widget on Github to see the codes.)
 
 The second parameter controls the filtering by key. It's an <ins>optional</ins> parameter. If given, the data in the hive box is filtered by the given keys. And only the filtered data is passed to the buildLayout function.
-#### Show all the data in the hive box:
+### Show all the data in the hive box:
 
 Don't provide any keys to show all the data in the hive box.
 
@@ -342,7 +342,7 @@ Container(
 )
 ```
 
-#### Filter only specific books and show them:
+### Filter only specific books and show them:
 
 Provide the keys parameter to filter by keys.
 <br/>
@@ -358,7 +358,7 @@ Container(
 )
 ```
 
-#### Alternatively, create your own filters in your custom ValueListenableBuilder widget:
+### Alternatively, create your own filters in your custom ValueListenableBuilder widget:
 
 Use the cache manager's <ins>getListenable</ins> method to get the ValueListenable. Filter or order your data in the builder method.
 
