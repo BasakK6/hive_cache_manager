@@ -47,13 +47,13 @@ void main() {
     await bookCacheManager.putItem(item: secondBook);
     await bookCacheManager.putItem(item: thirdBook);
     */
-    bookCacheManager.putItems(items: [firstBook, secondBook, thirdBook]);
+    await bookCacheManager.putItems(items: [firstBook, secondBook, thirdBook]);
 
     // test the functionality of the hive_cache_manager
     expect(bookCacheManager.getItem(key: thirdBook.mapKey)?.year, 1955);
 
     // remove a specific object from the hive box
-    bookCacheManager.removeItem(key: secondBook.mapKey);
+    await bookCacheManager.removeItem(key: secondBook.mapKey);
 
     // there should be only 2 books left in the hive box
     expect(bookCacheManager.getValues().length, 2);

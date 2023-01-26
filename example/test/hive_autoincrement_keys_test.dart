@@ -50,7 +50,7 @@ void main() {
 
     // remove the object named "thirdBook" from the hive
     // since the objects were added with a autoincrement key the key of the "thirdBook" should be 2 (first key is 0)
-    bookCacheManager.removeItem(key: 2);
+    await bookCacheManager.removeItem(key: 2);
 
     // there should be only 2 books left in the hive box
     expect(bookCacheManager.getValues().length, 2);
