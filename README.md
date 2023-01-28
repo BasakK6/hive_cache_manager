@@ -11,8 +11,9 @@ A wrapper package that lets you write minimum amount of cache related code
 * 📸 Uses <ins>ValueListenableBuilder</ins> to listen data changes
 * 🥳 Makes it easy to store custom models
 
+By using this package, you do not need to write separate Hive related code for each of your models. This package provides a generic cache manager class that handles hive box operations.
 ## Getting started
-Add this package to your pubspec.yaml file
+Add this package to your pubspec.yaml file and run pub get
 ```yaml
 dependencies:
   hive_cache_manager: latest
@@ -89,7 +90,9 @@ This will create the model_file_name.g.dart next to your model file.
 * If you want to store your objects with model specific keys, you can use this property to set which key will be used when saving the model object in the hive box.
   * For example, we may select ISBN number as key for the key-value pairs in the hive box.
 
+  <br></br>
   > The International Standard Book Number (ISBN) is a numeric commercial book identifier that is intended to be unique.
+
 ```dart
 import 'package:hive_cache_manager/hive_cache_manager.dart';
 
@@ -404,7 +407,7 @@ Container(
       
       minSdkVersion localProperties.getProperty('flutter.minSdkVersion').toInteger()
   ```
-* If you find any improvements, consider contributing to this project. All the contributions are welcome & appreciated! Github link: [hive_cache_manager](https://github.com/BasakK6/hive_cache_manager). 
+* If you find any improvements, consider contributing to this project. Contributions are welcome & appreciated! Github link: [hive_cache_manager](https://github.com/BasakK6/hive_cache_manager). 
 * Lastly, please give a like & star if you find this package helpful 💫
 
 ### Licence
