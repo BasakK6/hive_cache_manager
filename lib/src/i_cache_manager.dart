@@ -1,14 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'i_hive_model.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hive_cache_manager/src/i_hive_model.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+/// A cache helper that handles hive box operations
+///
+/// This class should be extended by the model manager class
 abstract class ICacheManager<T extends IHiveModel> {
   /// The name that is used when opening a hive box.
   final String _boxName;
+
   /// The hive box that is used to store key-value pairs.
   late Box<T> _hiveBox;
 
@@ -39,6 +43,7 @@ abstract class ICacheManager<T extends IHiveModel> {
   /// The key that is used to store encryption value as a key-value pair in the flutter secure storage.
   final String _encryptionKeyName = '_hive_box_encryption_';
 
+  /// constructor
   ICacheManager(this._boxName);
 
   /// Registers the model specific hive adapters and opens a hive box.
@@ -50,7 +55,7 @@ abstract class ICacheManager<T extends IHiveModel> {
 
     // apply encryption to the hive box according to isEncrypted and, open the box
     if (isEncrypted == true) {
-      var hiveAesCipher = await _encryptionCipher();
+      final hiveAesCipher = await _encryptionCipher();
       _hiveBox = await Hive.openBox(_boxName, encryptionCipher: hiveAesCipher);
     } else {
       _hiveBox = await Hive.openBox(_boxName);
@@ -79,7 +84,8 @@ abstract class ICacheManager<T extends IHiveModel> {
   ///
   /// Returns the newly generated and stored key.
   Future<String?> _generateNewEncryptionKey(
-      FlutterSecureStorage secureStorage) async {
+    FlutterSecureStorage secureStorage,
+  ) async {
     //generate a key
     final key = Hive.generateSecureKey();
     // save the key to flutter secure storage
@@ -88,7 +94,7 @@ abstract class ICacheManager<T extends IHiveModel> {
       value: base64UrlEncode(key),
     );
     //read and return the newly created key
-    return await secureStorage.read(key: _encryptionKeyName);
+    return secureStorage.read(key: _encryptionKeyName);
   }
 
   //------add value(s) with autoincrement keys------
@@ -107,12 +113,12 @@ abstract class ICacheManager<T extends IHiveModel> {
 
   /// Adds a list of [T] type objects to the hive box with model specific keys.
   ///
-  /// Model specific key is defined in [mapKey] computed property in the [T] type class (model class).
+  /// Model specific key is defined in mapKey computed property in the [T] type class (model class).
   Future<void> putItems({required Iterable<T> items}) async {
     await _hiveBox.putAll(
       Map.fromEntries(
         items.map(
-              (e) => MapEntry(e.mapKey, e),
+          (e) => MapEntry(e.mapKey, e),
         ),
       ),
     );
@@ -120,7 +126,7 @@ abstract class ICacheManager<T extends IHiveModel> {
 
   /// Adds a [T] type object to the hive box with a model specific key.
   ///
-  /// Model specific key is defined in [mapKey] computed property in the [T] type class (model class).
+  /// Model specific key is defined in mapKey computed property in the [T] type class (model class).
   Future<void> putItem({required T item}) async {
     await _hiveBox.put(item.mapKey, item);
   }
@@ -151,7 +157,8 @@ abstract class ICacheManager<T extends IHiveModel> {
   /// If startKey does not exist, an empty iterable is returned.
   /// If endKey does not exist or is before startKey, it is ignored.
   /// The values are in the same order as their keys
-  Iterable<T> getValuesBetween({required dynamic startKey, required dynamic endKey}) {
+  Iterable<T> getValuesBetween(
+      {required dynamic startKey, required dynamic endKey}) {
     return _hiveBox.valuesBetween(startKey: startKey, endKey: endKey);
   }
 
@@ -198,26 +205,28 @@ abstract class ICacheManager<T extends IHiveModel> {
   /// Returns a [ValueListenable] which notifies its listeners when an entry in the box changes.
   ///
   /// If [keys] filter is provided, only changes to entries with the specified [keys] notify the listeners.
-  ValueListenable<Box<T>> getListenable({List<dynamic>? keys}){
+  ValueListenable<Box<T>> getListenable({List<dynamic>? keys}) {
     return _hiveBox.listenable(keys: keys);
   }
 
   /// Returns a [ValueListenableBuilder] that is connected to the hive box.
   ///
-  /// The [buildLayout] function defines how the [data] is used and shown on the user interface.
+  /// The [buildLayout] function defines how the data is used and shown on the user interface.
   /// If [keys] filter is provided, only changes to entries with the specified [keys] notify the listeners.
   /// In addition, if the [keys] parameter is provided, the entries are filtered by [keys] and only the matching entries are sent to the [buildLayout] function.
-  /// If no matching entries found, an empty [List] is passed as [data] to the [buildLayout] function.
-  ValueListenableBuilder<Box<T>> getValueListenableBuilder({ required Widget Function(List<T> data) buildLayout, List<dynamic>? keys}){
+  /// If no matching entries found, an empty [List] is passed as data to the [buildLayout] function.
+  ValueListenableBuilder<Box<T>> getValueListenableBuilder(
+      {required Widget Function(List<T> data) buildLayout,
+      List<dynamic>? keys}) {
     return ValueListenableBuilder(
-      valueListenable: getListenable(keys:keys),
+      valueListenable: getListenable(keys: keys),
       builder: (context, box, widget) {
         if (keys?.isNotEmpty ?? false) {
-          List<T> data = [];
+          final List<T> data = [];
           //filter the data by keys
-          for (dynamic itemKey in keys!) {
+          for (final dynamic itemKey in keys!) {
             if (getItem(key: itemKey) != null) {
-              data.add(getItem(key: itemKey) as T);
+              data.add(getItem(key: itemKey)!);
             }
           }
 

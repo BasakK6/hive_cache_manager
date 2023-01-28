@@ -2,9 +2,9 @@ part of '../book_view.dart';
 
 class BookListView extends StatelessWidget {
   const BookListView({
-    Key? key,
     required this.bookCacheManager,
     required this.books,
+    Key? key,
   }) : super(key: key);
 
   final List<Book> books;
@@ -20,11 +20,11 @@ class BookListView extends StatelessWidget {
 
         return _DismissibleWidget(
           itemKey: item.mapKey,
-          onDismissed: () {
+          onDismissed: () async {
             // Remove the item from the data source.
-            bookCacheManager.removeItem(key: item.mapKey);
+            await bookCacheManager.removeItem(key: item.mapKey);
             //show a message to the user
-            Utility().showSnackBar(context,
+            Utility().showSnackBar(
                 "${item.title} ${BooksUIConstants.snackBarMessageSuffix}");
           },
           child: _BookCard(book: item),

@@ -2,9 +2,9 @@ part of '../book_view.dart';
 
 class FilteredBooksLayout extends StatelessWidget {
   const FilteredBooksLayout({
-    Key? key,
     required this.buildLayout,
     required this.bookCacheManager,
+    Key? key,
   }) : super(key: key);
 
   final Widget Function(List<Book> data) buildLayout;
@@ -15,9 +15,9 @@ class FilteredBooksLayout extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: bookCacheManager.getListenable(),
       builder: (context, box, widget) {
-        List<Book> data = [];
+        final List<Book> data = [];
 
-        for (Book book in bookCacheManager.getValues()) {
+        for (final Book book in bookCacheManager.getValues()) {
           //filter the books whose year information is 1995
           //change this filter as needed
           if (book.year == 1955) {

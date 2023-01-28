@@ -2,8 +2,8 @@ part of '../book_view.dart';
 
 class _TitleWidget extends StatelessWidget {
   const _TitleWidget({
-    Key? key,
     required this.title,
+    Key? key,
   }) : super(key: key);
   final String title;
 

@@ -49,7 +49,7 @@ class _BookViewState extends BookModelView {
 
   Widget buildBody() {
     return FutureBuilder(
-      future: future,
+      future: initCacheManager(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return SingleChildScrollView(

@@ -2,10 +2,10 @@ part of '../book_view.dart';
 
 class _DismissibleWidget extends StatelessWidget {
   const _DismissibleWidget({
-    Key? key,
     required this.itemKey,
     required this.onDismissed,
     required this.child,
+    Key? key,
   }) : super(key: key);
 
   final String itemKey;

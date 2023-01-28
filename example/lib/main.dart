@@ -1,9 +1,10 @@
+import 'package:example/features/books/view/book_view.dart';
+import 'package:example/project/hive_constants.dart';
 import 'package:example/project/project_constants.dart';
+import 'package:example/project/project_globals.dart';
 import 'package:example/project/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:example/project/hive_constants.dart';
-import 'features/books/view/book_view.dart';
 
 void main() async{
   //initialize Hive before using
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       title: ProjectConstants.appTitle,
       debugShowCheckedModeBanner: false,
       theme: ProjectTheme().theme,
+      scaffoldMessengerKey: snackBarKey,
       home: const BookView(),
     );
   }

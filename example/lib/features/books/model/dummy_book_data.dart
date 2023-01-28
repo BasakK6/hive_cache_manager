@@ -6,21 +6,21 @@ class DummyBookData{
   List<Book> get items => _items;
 
   DummyBookData.init(){
-    Book firstBook = Book(
+    final Book firstBook = Book(
       title: 'Lord of The Rings - The Fellowship of the Ring',
       author: 'J. R. R. Tolkien',
       year: 1954,
       isbn: '9780618260515',
     );
 
-    Book secondBook = Book(
+    final Book secondBook = Book(
       title: 'Lord of The Rings - The Two Towers',
       author: 'J. R. R. Tolkien',
       year: 1954,
       isbn: '9780261102361',
     );
 
-    Book thirdBook = Book(
+    final Book thirdBook = Book(
       title: 'Lord of The Rings - The Return of the King',
       author: 'J. R. R. Tolkien',
       year: 1955,

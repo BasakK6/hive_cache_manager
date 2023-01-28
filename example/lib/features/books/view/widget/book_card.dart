@@ -1,7 +1,7 @@
 part of '../book_view.dart';
 
 class _BookCard extends StatelessWidget {
-  const _BookCard({Key? key, required this.book}) : super(key: key);
+  const _BookCard({required this.book, Key? key,}) : super(key: key);
 
   final Book book;
 

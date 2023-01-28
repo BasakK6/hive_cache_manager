@@ -1,6 +1,6 @@
 import 'package:example/project/hive_constants.dart';
-import 'package:hive_cache_manager/hive_cache_manager.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_cache_manager/hive_cache_manager.dart';
 
 part 'book.g.dart';
 

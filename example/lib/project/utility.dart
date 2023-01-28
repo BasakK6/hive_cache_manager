@@ -1,12 +1,11 @@
+import 'package:example/project/project_globals.dart';
 import 'package:flutter/material.dart';
 
 class Utility{
-  void showSnackBar(BuildContext context, String message){
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 1),
-      ),
-    );
+  void showSnackBar(String message){
+    final SnackBar snackBar = SnackBar(content: Text(message), duration: const Duration(seconds: 1));
+    snackBarKey.currentState?.showSnackBar(snackBar);
   }
 }
+
+
