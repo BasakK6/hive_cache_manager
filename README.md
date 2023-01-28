@@ -71,7 +71,15 @@ class Book {
 }
 ```
 ### 3) Generate the type adapter file
-Run the command below in your terminal to generate the type adapter for the Book object.
+Add the <ins>build_runner</ins> package under your dev_dependencies in pubspec.yaml:
+
+```yaml
+dev_dependencies:
+  #code generation
+  build_runner: latest
+```
+
+And then run the command below in your terminal to generate the type adapter for the Book class.
 This step is also necessary for using the [hive](https://pub.dev/packages/hive) package.
 ```
 flutter packages pub run build_runner build
@@ -81,7 +89,7 @@ This will create the model_file_name.g.dart next to your model file.
 
 ![Type Adapter File SS](https://github.com/BasakK6/hive_cache_manager/blob/master/readme_assets/type_adapter_file_ss.png?raw=true)
 
-👍  No need to add "**build_runner**" or "**hive_generator**" packages in your pubspec.yaml. These packages are already included in the hive_cache_manager. Just run the command above.
+👍  No need to add "**hive_generator**" package in your pubspec.yaml. This package is already included in the hive_cache_manager. Just run the command above.
 
 ### 4) Extend your model from IHiveModel
 
@@ -90,7 +98,6 @@ This will create the model_file_name.g.dart next to your model file.
 * If you want to store your objects with model specific keys, you can use this property to set which key will be used when saving the model object in the hive box.
   * For example, we may select ISBN number as key for the key-value pairs in the hive box.
 
-  <br></br>
   > The International Standard Book Number (ISBN) is a numeric commercial book identifier that is intended to be unique.
 
 ```dart
