@@ -1,7 +1,7 @@
 name: hive_cache_manager
-description: A new Flutter package project.
+description: A cache helper to easily store custom models and write minimum amount of hive related code.
 version: 0.0.1
-homepage:
+homepage: https://github.com/BasakK6/hive_cache_manager
 
 environment:
   sdk: '>=2.18.1 <3.0.0'
