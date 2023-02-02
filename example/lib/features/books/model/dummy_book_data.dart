@@ -1,11 +1,11 @@
 import 'package:example/features/books/model/book.dart';
 
-class DummyBookData{
+class DummyBookData {
   late final List<Book> _items;
 
   List<Book> get items => _items;
 
-  DummyBookData.init(){
+  DummyBookData.init() {
     final Book firstBook = Book(
       title: 'Lord of The Rings - The Fellowship of the Ring',
       author: 'J. R. R. Tolkien',
@@ -27,6 +27,6 @@ class DummyBookData{
       isbn: '9780007136575',
     );
 
-    _items = [firstBook ,secondBook, thirdBook];
+    _items = [firstBook, secondBook, thirdBook];
   }
 }

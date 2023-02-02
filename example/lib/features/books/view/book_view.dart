@@ -62,7 +62,8 @@ class _BookViewState extends BookModelView {
                 const _TitleWidget(title: BooksUIConstants.filteredByKeyTitle),
                 bookCacheManager.getValueListenableBuilder(
                     buildLayout: buildBooksLayout, keys: filterKeys),
-                const _TitleWidget(title: BooksUIConstants.filteredByPropertyTitle),
+                const _TitleWidget(
+                    title: BooksUIConstants.filteredByPropertyTitle),
                 buildFilteredBooksLayout(),
               ],
             ),

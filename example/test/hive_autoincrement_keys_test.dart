@@ -32,21 +32,22 @@ void main() {
     );
 
     // create and explicitly initialize a manager object
-    final BookCacheManager bookCacheManager = BookCacheManager("${HiveConstants.booksHiveBoxName}_autoincrement_keys");
+    final BookCacheManager bookCacheManager = BookCacheManager(
+        "${HiveConstants.booksHiveBoxName}_autoincrement_keys");
     await bookCacheManager.init(isEncrypted: false);
 
     // clear all the objects written from the previous test run
     await bookCacheManager.clearAll();
 
     // the hive box should be empty since no items have been added yet
-    expect(bookCacheManager.getValues(),[]);
+    expect(bookCacheManager.getValues(), []);
 
     // add your model objects to hive
     final List<Book> books = [firstBook, secondBook, thirdBook];
     await bookCacheManager.addItems(items: books);
 
     // test the functionality of the hive_cache_manager
-    expect(bookCacheManager.getValues().first.isbn,'9780618260515');
+    expect(bookCacheManager.getValues().first.isbn, '9780618260515');
 
     // remove the object named "thirdBook" from the hive
     // since the objects were added with a autoincrement key the key of the "thirdBook" should be 2 (first key is 0)
@@ -56,7 +57,8 @@ void main() {
     expect(bookCacheManager.getValues().length, 2);
 
     // read the values whose keys start at 0 and ends at 1 (inclusive)
-    final Iterable<Book> otherBooks = bookCacheManager.getValuesBetween(startKey: 0, endKey: 1);
+    final Iterable<Book> otherBooks =
+        bookCacheManager.getValuesBetween(startKey: 0, endKey: 1);
 
     // put the remaining model objects in an Iterable
     final Iterable<Book> remainingBooks = [firstBook, secondBook];

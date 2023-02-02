@@ -1,4 +1,4 @@
-class HiveConstants{
+class HiveConstants {
   static const hiveDbName = "hive_db";
   static const booksHiveBoxName = "books_hive_box";
   static const String hiveBoxNameSuffix = "_model_specific_keys";

@@ -6,7 +6,7 @@ import 'package:example/project/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-void main() async{
+void main() async {
   //initialize Hive before using
   await Hive.initFlutter(HiveConstants.hiveDbName);
 

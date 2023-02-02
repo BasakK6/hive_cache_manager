@@ -5,7 +5,7 @@ import 'package:hive_cache_manager/hive_cache_manager.dart';
 part 'book.g.dart';
 
 @HiveType(typeId: HiveConstants.bookTypeId)
-class Book extends IHiveModel{
+class Book extends IHiveModel {
   @HiveField(HiveConstants.bookIsbnFieldId)
   String isbn;
   @HiveField(HiveConstants.bookTitleFieldId)
@@ -15,7 +15,11 @@ class Book extends IHiveModel{
   @HiveField(HiveConstants.bookYearFieldId)
   int year;
 
-  Book({required this.title, required this.author, required this.year, required this.isbn});
+  Book(
+      {required this.title,
+      required this.author,
+      required this.year,
+      required this.isbn});
 
   @override
   String get mapKey => isbn;

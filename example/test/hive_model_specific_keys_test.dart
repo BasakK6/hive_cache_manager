@@ -32,14 +32,15 @@ void main() {
     );
 
     // create and explicitly initialize a manager object
-    final BookCacheManager bookCacheManager = BookCacheManager("${HiveConstants.booksHiveBoxName}_model_specific_keys");
+    final BookCacheManager bookCacheManager = BookCacheManager(
+        "${HiveConstants.booksHiveBoxName}_model_specific_keys");
     await bookCacheManager.init(isEncrypted: false);
 
     //clear all the objects written from the previous test run
     await bookCacheManager.clearAll();
 
     // the hive box should be empty since no items have been added yet
-    expect(bookCacheManager.getValues(),[]);
+    expect(bookCacheManager.getValues(), []);
 
     // add your model objects to hive box
     /*
@@ -59,7 +60,8 @@ void main() {
     expect(bookCacheManager.getValues().length, 2);
 
     // remove the rest of the books
-    await bookCacheManager.removeItems(keys: [firstBook.mapKey, thirdBook.mapKey]);
+    await bookCacheManager
+        .removeItems(keys: [firstBook.mapKey, thirdBook.mapKey]);
 
     // the hive box should be empty
     expect(bookCacheManager.getValues().length, 0);
