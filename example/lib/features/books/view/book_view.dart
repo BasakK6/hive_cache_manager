@@ -49,9 +49,9 @@ class _BookViewState extends BookModelView {
 
   Widget buildBody() {
     return FutureBuilder(
-      future: initCacheManager(),
+      future: future,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.done) {
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

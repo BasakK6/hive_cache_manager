@@ -9,6 +9,7 @@ abstract class BookModelView extends State<BookView> {
   late final BookCacheManager bookCacheManager;
   late final List<Book> dummyBookData;
   final List<String> filterKeys = ["9780618260515", "9780007136575"];
+  late final Future<void> future;
 
   @override
   void initState() {
@@ -16,17 +17,13 @@ abstract class BookModelView extends State<BookView> {
     bookCacheManager = BookCacheManager(
         "${HiveConstants.booksHiveBoxName}${HiveConstants.hiveBoxNameSuffix}");
     dummyBookData = DummyBookData.init().items;
-  }
-
-  Future<bool> initCacheManager() async {
-    await bookCacheManager.init(isEncrypted: true);
-    return true;
+    future = bookCacheManager.init(isEncrypted: true);
   }
 
   @override
   Future<void> dispose() async {
-    super.dispose();
     await bookCacheManager.closeBox();
+    super.dispose();
   }
 
   Future<void> addDummyBookDataToCache() async {
